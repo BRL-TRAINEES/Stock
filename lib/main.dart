@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'Pages/HomePage.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
-void main(){
+void main()async{
   runApp(const Stock());
 }
  class Stock extends StatelessWidget {
