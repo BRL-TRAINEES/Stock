@@ -71,13 +71,13 @@ class _NewsState extends State<News> {
                     decoration: BoxDecoration(
                       boxShadow: [
                         BoxShadow(
-                          color: Colors.black.withOpacity(0.1),
+                          color: Colors.black54.withOpacity(0.1),
                           spreadRadius: 2,
                           blurRadius: 5,
                           offset: Offset(0, 3),
                         ),
                       ],
-                      color: Colors.black38.withOpacity(0.9),
+                      color: Colors.blueGrey.withOpacity(0.9),
                       borderRadius: BorderRadius.circular(15),
                     ),
                     child: Column(
@@ -97,12 +97,12 @@ class _NewsState extends State<News> {
                           style: TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.bold,
-                            color: Color.fromRGBO(10, 90, 90, 1),
+                            color: Color.fromRGBO(20, 60, 100, 1),
                           ),
                         ),
                         const SizedBox(height: 8),
                         Text(
-                          'Summary: ${data[index]['summary']}',
+                          'Summary :  ${data[index]['summary']}',
                           style: TextStyle(
                             fontSize: 16,
                             color: Colors.white,

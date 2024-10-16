@@ -52,7 +52,6 @@ class _StockdetailsState extends State<Stockdetails> {
             color: Colors.white,
           ),
         ),
-        elevation: 0,
       ),
       body: Container(
         decoration: BoxDecoration(
@@ -69,7 +68,7 @@ class _StockdetailsState extends State<Stockdetails> {
           padding: const EdgeInsets.all(8.0),
           child: Column(
             children: [
-              const SizedBox(height: 20),
+              const SizedBox(height: 10),
               Expanded(
                 child: FutureBuilder<List<DailyAdjusted>>(
                   future: _futureStockData,
@@ -85,7 +84,7 @@ class _StockdetailsState extends State<Stockdetails> {
                       return Column(
                         children: [
                           _buildStockOverviewCard(stocks.first),
-                          const SizedBox(height: 20),
+                          const SizedBox(height: 10),
                           _buildStockList(stocks),
                         ],
                       );
@@ -106,7 +105,7 @@ class _StockdetailsState extends State<Stockdetails> {
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
       color: Colors.white.withOpacity(0.9),
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -123,7 +122,7 @@ class _StockdetailsState extends State<Stockdetails> {
               "Date: ${stock.date}",
               style: const TextStyle(fontSize: 16, color: Colors.black54),
             ),
-            const SizedBox(height: 8),
+            const SizedBox(height: 7),
             Text(
               "Open: \$${stock.open.toStringAsFixed(2)}",
               style: const TextStyle(fontSize: 16, color: Colors.black87),
@@ -134,11 +133,11 @@ class _StockdetailsState extends State<Stockdetails> {
             ),
             Text(
               "High: \$${stock.high.toStringAsFixed(2)}",
-              style: const TextStyle(fontSize: 16, color: Colors.black87),
+              style: const TextStyle(fontSize: 16, color: Colors.green),
             ),
             Text(
               "Low: \$${stock.low.toStringAsFixed(2)}",
-              style: const TextStyle(fontSize: 16, color: Colors.black87),
+              style: const TextStyle(fontSize: 16, color: Colors.red),
             ),
             const SizedBox(height: 8),
             ElevatedButton(
@@ -176,7 +175,7 @@ class _StockdetailsState extends State<Stockdetails> {
             elevation: 5,
             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
             color: Colors.white.withOpacity(0.9),
-            margin: const EdgeInsets.symmetric(vertical: 5, horizontal: 8),
+            margin: const EdgeInsets.symmetric(vertical: 6, horizontal: 8),
             child: ListTile(
               contentPadding: const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
               title: Text(
@@ -185,7 +184,7 @@ class _StockdetailsState extends State<Stockdetails> {
               ),
               subtitle: Text(
                 'Open: \$${stock.open.toStringAsFixed(2)}, Close: \$${stock.close.toStringAsFixed(2)}',
-                style: const TextStyle(color: Colors.blue),
+                style: const TextStyle(color: Color.fromRGBO(30, 40, 80, 1),),
               ),
               trailing: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
