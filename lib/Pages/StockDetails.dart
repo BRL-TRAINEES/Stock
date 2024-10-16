@@ -4,6 +4,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:stock_app/Models/daily_adjusted_model.dart';
 import 'package:stock_app/Pages/CompanyNews.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 class Stockdetails extends StatefulWidget {
   final String symbol;
@@ -74,7 +75,10 @@ class _StockdetailsState extends State<Stockdetails> {
                   future: _futureStockData,
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
-                      return const Center(child: CircularProgressIndicator());
+                      return  Center(child: LoadingAnimationWidget.fourRotatingDots(
+                        color: Colors.white,
+                        size: 50,
+                      ));
                     } else if (snapshot.hasError) {
                       return Center(child: Text('Error occurred', style: TextStyle(color: Colors.red)));
                     } else if (!snapshot.hasData || snapshot.data!.isEmpty) {

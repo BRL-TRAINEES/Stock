@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 class News extends StatefulWidget {
   final String date;
@@ -60,7 +61,10 @@ class _NewsState extends State<News> {
           future: getData(),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return const Center(child: CircularProgressIndicator());
+              return  Center(child: LoadingAnimationWidget.newtonCradle(
+                color: Colors.white,
+                size: 50,
+              ));
             } else {
               return ListView.builder(
                 itemCount: data.length,
