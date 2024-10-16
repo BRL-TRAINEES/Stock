@@ -61,9 +61,9 @@ class _NewsState extends State<News> {
           future: getData(),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return  Center(child: LoadingAnimationWidget.newtonCradle(
+              return  Center(child: LoadingAnimationWidget.inkDrop(
                 color: Colors.white,
-                size: 50,
+                size: 35,
               ));
             } else {
               return ListView.builder(
@@ -92,7 +92,7 @@ class _NewsState extends State<News> {
                           style: TextStyle(
                             fontSize: 14,
                             fontWeight: FontWeight.w500,
-                            color: Colors.white30,
+                            color: Colors.greenAccent,
                           ),
                         ),
                         const SizedBox(height: 8),

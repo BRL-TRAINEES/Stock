@@ -5,6 +5,7 @@ import 'dart:convert';
 import 'package:stock_app/Models/StockSymbols.dart';
 import 'package:stock_app/Pages/MarketHolidays.dart';
 import 'package:stock_app/Pages/StockDetails.dart';
+import 'package:animated_text_kit/animated_text_kit.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -58,10 +59,10 @@ class _HomePageState extends State<HomePage> {
       appBar: AppBar(
         backgroundColor: Color.fromRGBO(30, 40, 80, 1),
         title: const Text(
-          'Stocks',
+          'STOCKS',
           style: TextStyle(
             fontWeight: FontWeight.bold,
-            color: Colors.white,
+            color: Colors.greenAccent,
           ),
         ),
         elevation: 0,
@@ -109,6 +110,7 @@ class _HomePageState extends State<HomePage> {
                     borderRadius: BorderRadius.circular(15),
                   ),
                 ),
+
                 onPressed: () {
                   Navigator.push(
                     context,
@@ -117,10 +119,16 @@ class _HomePageState extends State<HomePage> {
                     ),
                   );
                 },
-                child: const Text(
-                  'See Market Holidays',
-                  style: TextStyle(fontSize: 16, color: Colors.white),
+                child: SizedBox(
+                  height: 20,
+                  child: AnimatedTextKit(
+                    animatedTexts: [
+                      WavyAnimatedText('Market Holidays',textStyle: TextStyle(color: Colors.greenAccent,fontSize: 15))
+                    ],
+                    isRepeatingAnimation: true,
+                  ),
                 ),
+                //child: Text('Market Holidays'),
               ),
             ),
             Expanded(
@@ -153,7 +161,7 @@ class _HomePageState extends State<HomePage> {
                         SearchSymbol[index].symbol.toString(),
                         style: const TextStyle(
                           fontSize: 18,
-                          color: Colors.white,
+                          color: Colors.greenAccent,
                           fontWeight: FontWeight.w500,
                         ),
                       ),

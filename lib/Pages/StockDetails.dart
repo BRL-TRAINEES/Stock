@@ -5,6 +5,7 @@ import 'dart:convert';
 import 'package:stock_app/Models/daily_adjusted_model.dart';
 import 'package:stock_app/Pages/CompanyNews.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'package:animated_text_kit/animated_text_kit.dart';
 
 class Stockdetails extends StatefulWidget {
   final String symbol;
@@ -77,7 +78,7 @@ class _StockdetailsState extends State<Stockdetails> {
                     if (snapshot.connectionState == ConnectionState.waiting) {
                       return  Center(child: LoadingAnimationWidget.fourRotatingDots(
                         color: Colors.white,
-                        size: 50,
+                        size: 35,
                       ));
                     } else if (snapshot.hasError) {
                       return Center(child: Text('Error occurred', style: TextStyle(color: Colors.red)));
@@ -161,7 +162,15 @@ class _StockdetailsState extends State<Stockdetails> {
                   ),
                 );
               },
-              child: const Text('Current News', style: TextStyle(color: Colors.white)),
+              child: SizedBox(
+                height: 20,
+                child: AnimatedTextKit(
+                  animatedTexts: [
+                    TyperAnimatedText(' Latest News ',textStyle: TextStyle(color: Colors.greenAccent,fontSize: 15))
+                  ],
+                  isRepeatingAnimation: true,
+                ),
+              ),
             ),
           ],
         ),
