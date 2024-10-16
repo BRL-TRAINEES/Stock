@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
@@ -8,20 +7,18 @@ import 'package:stock_app/Pages/CompanyNews.dart';
 
 class Stockdetails extends StatefulWidget {
   final String symbol;
-  const Stockdetails({super.key , required this.symbol});
+  const Stockdetails({super.key, required this.symbol});
 
   @override
-  State<Stockdetails> createState() => _HomePageState();
+  State<Stockdetails> createState() => _StockdetailsState();
 }
 
-class _HomePageState extends State<Stockdetails> {
-
+class _StockdetailsState extends State<Stockdetails> {
   late Future<List<DailyAdjusted>> _futureStockData;
 
-
   @override
-  void initState() { // function excuted one time when widget is build
-    super.initState(); //for parent
+  void initState() {
+    super.initState();
     _futureStockData = getHttpRequest(widget.symbol);
   }
 
@@ -35,12 +32,9 @@ class _HomePageState extends State<Stockdetails> {
       final timeSeries = data['Time Series (Daily)'] as Map<String, dynamic>;
 
       return timeSeries.entries.map((entry) {
-        DailyAdjusted l=DailyAdjusted.fromJson(entry.key, entry.value);
+        DailyAdjusted l = DailyAdjusted.fromJson(entry.key, entry.value);
         return l;
       }).toList();
-      // DailyAdjusted l=
-
-
     } else {
       throw Exception('Failed to load stock data');
     }
@@ -50,38 +44,57 @@ class _HomePageState extends State<Stockdetails> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Stock Tracker'),
+        backgroundColor: Color.fromRGBO(40, 50, 90, 1),
+        title: const Text(
+          'Stock Tracker',
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            color: Colors.white,
+          ),
+        ),
+        elevation: 0,
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Column(
-          children: [
-            const SizedBox(height: 20),
-            Expanded(
-              child: FutureBuilder<List<DailyAdjusted>>(
-                future: _futureStockData,
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {  // if Api taking time to fetch data
-                    return const Center(child: CircularProgressIndicator());
-                  } else if (snapshot.hasError) {
-                    return Center(child: Text('Error occured'));
-                  } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                    return const Center(child: Text('No stock data available.'));
-                  } else {
-                    final stocks = snapshot.data!;
-                    return Column(
-                      children: [
-                        _buildStockOverviewCard(stocks.first),
-                        const SizedBox(height: 20),
-                        _buildStockList(stocks),
-                      ],
-                    );
-                  }
-                },
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [
+              Color.fromRGBO(30, 40, 80, 1),
+              Color.fromRGBO(70, 100, 160, 1),
+            ],
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+          ),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            children: [
+              const SizedBox(height: 20),
+              Expanded(
+                child: FutureBuilder<List<DailyAdjusted>>(
+                  future: _futureStockData,
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const Center(child: CircularProgressIndicator());
+                    } else if (snapshot.hasError) {
+                      return Center(child: Text('Error occurred', style: TextStyle(color: Colors.red)));
+                    } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                      return const Center(child: Text('No stock data available.', style: TextStyle(color: Colors.white)));
+                    } else {
+                      final stocks = snapshot.data!;
+                      return Column(
+                        children: [
+                          _buildStockOverviewCard(stocks.first),
+                          const SizedBox(height: 20),
+                          _buildStockList(stocks),
+                        ],
+                      );
+                    }
+                  },
+                ),
               ),
-
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
@@ -89,55 +102,64 @@ class _HomePageState extends State<Stockdetails> {
 
   Widget _buildStockOverviewCard(DailyAdjusted stock) {
     return Card(
-      elevation: 20, // shadow
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+      elevation: 10,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+      color: Colors.white.withOpacity(0.9),
       child: Padding(
-        padding: const EdgeInsets.only(left: 40,right: 40,top: 20,bottom: 20),
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
               "Stock: ${widget.symbol}",
               style: const TextStyle(
-                fontSize: 20,
+                fontSize: 22,
                 fontWeight: FontWeight.bold,
+                color: Color.fromRGBO(40, 50, 90, 1),
               ),
             ),
             const SizedBox(height: 8),
             Text(
               "Date: ${stock.date}",
-              style: const TextStyle(fontSize: 16),
+              style: const TextStyle(fontSize: 16, color: Colors.black54),
             ),
             const SizedBox(height: 8),
             Text(
               "Open: \$${stock.open.toStringAsFixed(2)}",
-              style: const TextStyle(fontSize: 16),
+              style: const TextStyle(fontSize: 16, color: Colors.black87),
             ),
             Text(
               "Close: \$${stock.close.toStringAsFixed(2)}",
-              style: const TextStyle(fontSize: 16),
+              style: const TextStyle(fontSize: 16, color: Colors.black87),
             ),
             Text(
               "High: \$${stock.high.toStringAsFixed(2)}",
-              style: const TextStyle(fontSize: 16),
+              style: const TextStyle(fontSize: 16, color: Colors.black87),
             ),
             Text(
               "Low: \$${stock.low.toStringAsFixed(2)}",
-              style: const TextStyle(fontSize: 16),
+              style: const TextStyle(fontSize: 16, color: Colors.black87),
             ),
             const SizedBox(height: 8),
             ElevatedButton(
-                onPressed:() {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => News(
-                        date: stock.date,
-                      ),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Color.fromRGBO(50, 70, 110, 1),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+              ),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => News(
+                      date: stock.date,
                     ),
-                  );
-                },
-                child: Text('current News'))
+                  ),
+                );
+              },
+              child: const Text('Current News', style: TextStyle(color: Colors.white)),
+            ),
           ],
         ),
       ),
@@ -152,15 +174,25 @@ class _HomePageState extends State<Stockdetails> {
           final stock = stocks[index];
           return Card(
             elevation: 5,
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+            color: Colors.white.withOpacity(0.9),
+            margin: const EdgeInsets.symmetric(vertical: 5, horizontal: 8),
             child: ListTile(
-              title: Text(stock.date),
-              subtitle: Text('Open: \$${stock.open.toStringAsFixed(2)},' // upto 2 digits after decimal
-                  'Close: \$${stock.close.toStringAsFixed(2)}'),
+              contentPadding: const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
+              title: Text(
+                stock.date,
+                style: const TextStyle(fontWeight: FontWeight.bold, color: Color.fromRGBO(40, 50, 90, 1)),
+              ),
+              subtitle: Text(
+                'Open: \$${stock.open.toStringAsFixed(2)}, Close: \$${stock.close.toStringAsFixed(2)}',
+                style: const TextStyle(color: Colors.blue),
+              ),
               trailing: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
-                  Text('High: \$${stock.high.toStringAsFixed(2)}'),
-                  Text('Low: \$${stock.low.toStringAsFixed(2)}'),
+                  Text('High: \$${stock.high.toStringAsFixed(2)}', style: const TextStyle(color: Colors.green)),
+                  Text('Low: \$${stock.low.toStringAsFixed(2)}', style: const TextStyle(color: Colors.red)),
                 ],
               ),
             ),
@@ -170,5 +202,3 @@ class _HomePageState extends State<Stockdetails> {
     );
   }
 }
-
-//sliver , sliverlist , sliverappbar

@@ -23,24 +23,22 @@ class _HomePageState extends State<HomePage> {
     getSymbol();
   }
 
-
   void SearchList(String val) {
     setState(() {
       if (val.isEmpty) {
         SearchSymbol = SymbolList;
       } else {
-        SearchSymbol = SymbolList.where((element) => element.symbol.toString().toLowerCase().startsWith(val.toLowerCase())).toList();
+        SearchSymbol = SymbolList.where((element) =>
+            element.symbol.toString().toLowerCase().startsWith(val.toLowerCase())).toList();
       }
     });
   }
 
   Future<void> getSymbol() async {
     final response = await http.get(
-
-      Uri.parse(
-          'https://finnhub.io/api/v1/stock/symbol?exchange=US&token=${dotenv.env['apikey']}'),
+      Uri.parse('https://finnhub.io/api/v1/stock/symbol?exchange=US&token=${dotenv.env['apikey']}'),
     );
- print(dotenv.env['apikey']);
+    print(dotenv.env['apikey']);
 
     if (response.statusCode == 200) {
       var data = jsonDecode(response.body.toString());
@@ -58,31 +56,60 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Stocks'),
+        backgroundColor: Color.fromRGBO(30, 40, 80, 1),
+        title: const Text(
+          'Stocks',
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            color: Colors.white,
+          ),
+        ),
+        elevation: 0,
       ),
-      body: Column(
-        children: [
-          Expanded(
-            child: Padding(
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [
+              Color.fromRGBO(30, 40, 80, 1),
+              Color.fromRGBO(60, 90, 150, 1),
+            ],
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+          ),
+        ),
+        child: Column(
+          children: [
+            Padding(
               padding: const EdgeInsets.all(10),
               child: TextField(
                 onChanged: (value) {
                   SearchList(value);
                 },
+                style: TextStyle(color: Colors.white),
                 decoration: InputDecoration(
-                  fillColor: Colors.white,
+                  fillColor: Colors.white.withOpacity(0.1),
+                  filled: true,
                   border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10),
+                    borderRadius: BorderRadius.circular(15),
+                    borderSide: BorderSide.none,
                   ),
                   hintText: 'Search Symbol',
-                  prefixIcon: const Icon(Icons.search),
+                  hintStyle: TextStyle(color: Colors.white70),
+                  prefixIcon: const Icon(Icons.search, color: Colors.white),
                 ),
               ),
             ),
-          ),
-          Container(
-            child: ElevatedButton(
-                onPressed: (){
+            Container(
+              margin: const EdgeInsets.symmetric(vertical: 10),
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Color.fromRGBO(50, 70, 110, 1),
+                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(15),
+                  ),
+                ),
+                onPressed: () {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
@@ -90,50 +117,63 @@ class _HomePageState extends State<HomePage> {
                     ),
                   );
                 },
-                child: Text('See Market Holidays')),
-          ),
-          Expanded(
-            flex: 5,
-            child: ListView.builder(
-              itemCount: SearchSymbol.length,
-              itemBuilder: (context, index) {
-                return Container(
-                  margin: EdgeInsets.fromLTRB(8, 5, 8, 8),
-                  decoration: BoxDecoration(
-                    boxShadow:[
-                      BoxShadow(
-                        color: Colors.grey.withOpacity(0.5),
-                        spreadRadius: 1,
-                        blurRadius: 5,
-                        offset: Offset(0, 3),
+                child: const Text(
+                  'See Market Holidays',
+                  style: TextStyle(fontSize: 16, color: Colors.white),
+                ),
+              ),
+            ),
+            Expanded(
+              child: ListView.builder(
+                itemCount: SearchSymbol.length,
+                itemBuilder: (context, index) {
+                  return Container(
+                    margin: const EdgeInsets.fromLTRB(10, 5, 10, 8),
+                    decoration: BoxDecoration(
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.2),
+                          spreadRadius: 1,
+                          blurRadius: 6,
+                          offset: const Offset(0, 4),
+                        ),
+                      ],
+                      gradient: LinearGradient(
+                        colors: [
+                          Color.fromRGBO(40, 50, 90, 1),
+                          Color.fromRGBO(50, 70, 110, 1),
+                        ],
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
                       ),
-                    ],
-                    color: Color.fromRGBO(40, 50, 90,1),
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: GestureDetector(
+                      borderRadius: BorderRadius.circular(15),
+                    ),
                     child: ListTile(
                       title: Text(
                         SearchSymbol[index].symbol.toString(),
-                        style: const TextStyle(fontSize: 17,color: Colors.white),
-                      ),
-                    ),
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => Stockdetails(
-                            symbol: SearchSymbol[index].symbol.toString(),
-                          ),
+                        style: const TextStyle(
+                          fontSize: 18,
+                          color: Colors.white,
+                          fontWeight: FontWeight.w500,
                         ),
-                      );
-                    },
-                  ),
-                );
-              },
+                      ),
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => Stockdetails(
+                              symbol: SearchSymbol[index].symbol.toString(),
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                  );
+                },
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

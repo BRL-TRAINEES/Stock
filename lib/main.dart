@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'Pages/HomePage.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:stock_app/Pages/splashScreen.dart';
 
 Future<void> main()async{
   WidgetsFlutterBinding.ensureInitialized();
@@ -16,7 +16,7 @@ Future<void> main()async{
      return MaterialApp(
        debugShowCheckedModeBanner: false,
        title: 'Stocks',
-       home: const HomePage(),
+       home: const Splashscreen(),
      );
    }
  }
