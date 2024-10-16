@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:stock_app/Models/StockSymbols.dart';
@@ -13,7 +14,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  final apikey = 'cs6hoc9r01qkeuli35c0cs6hoc9r01qkeuli35cg';
   List<StockSymbol> SymbolList = [];
   List<StockSymbol> SearchSymbol = [];
 
@@ -22,6 +22,7 @@ class _HomePageState extends State<HomePage> {
     super.initState();
     getSymbol();
   }
+
 
   void SearchList(String val) {
     setState(() {
@@ -35,9 +36,11 @@ class _HomePageState extends State<HomePage> {
 
   Future<void> getSymbol() async {
     final response = await http.get(
+
       Uri.parse(
-          'https://finnhub.io/api/v1/stock/symbol?exchange=US&token=$apikey'),
+          'https://finnhub.io/api/v1/stock/symbol?exchange=US&token=${dotenv.env['apikey']}'),
     );
+ print(dotenv.env['apikey']);
 
     if (response.statusCode == 200) {
       var data = jsonDecode(response.body.toString());

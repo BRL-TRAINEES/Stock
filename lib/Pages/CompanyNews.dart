@@ -1,6 +1,8 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
+
 
 class News extends StatefulWidget {
   final date;
@@ -13,7 +15,7 @@ class News extends StatefulWidget {
 class _NewsState extends State<News> {
   var data;
   Future<void>getData()async{
-    String url ='https://finnhub.io/api/v1/company-news?symbol=AAPL&from=${widget.date}&to=${widget.date}&token=cs6hoc9r01qkeuli35c0cs6hoc9r01qkeuli35cg';
+    String url ='https://finnhub.io/api/v1/company-news?symbol=AAPL&from=${widget.date}&to=${widget.date}&token=${dotenv.env['apikey']}';
     var response = await http.get(Uri.parse(url));
     if(response.statusCode==200){
        data = jsonDecode(response.body.toString());

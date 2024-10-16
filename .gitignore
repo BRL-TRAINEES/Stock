@@ -9,7 +9,7 @@
 .history
 .svn/
 migrate_working_dir/
-
+assests/.env
 # IntelliJ related
 *.iml
 *.ipr
@@ -43,4 +43,3 @@ app.*.map.json
 /android/app/release
 
 # API keys and environment variables
-.env

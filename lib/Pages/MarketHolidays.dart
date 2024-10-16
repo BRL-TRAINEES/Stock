@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
@@ -14,10 +15,11 @@ class _HolidaysState extends State<Holidays> {
   List<dynamic>finalData=[];
 
   Future<void>getData()async{
-    String url ='https://finnhub.io/api/v1/stock/market-holiday?exchange=US&token=cs6hoc9r01qkeuli35c0cs6hoc9r01qkeuli35cg';
+    String url ='https://finnhub.io/api/v1/stock/market-holiday?exchange=US&token=${dotenv.env['apikey']}';
       var response = await http.get(Uri.parse(url));
     if (response.statusCode == 200) {
       final jsonResponse = jsonDecode(response.body);
+      print('Loaded API Key----------------: ${dotenv.env['apikey']}');
       setState(() {
         finalData = jsonResponse['data']; // Update to access the 'data' key.
       });

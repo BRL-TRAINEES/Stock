@@ -1,10 +1,10 @@
 
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:stock_app/Models/daily_adjusted_model.dart';
 import 'package:stock_app/Pages/CompanyNews.dart';
-
 
 class Stockdetails extends StatefulWidget {
   final String symbol;
@@ -16,7 +16,6 @@ class Stockdetails extends StatefulWidget {
 
 class _HomePageState extends State<Stockdetails> {
 
-  final String apikey = "KVGTWNS5U9H7E4YC";
   late Future<List<DailyAdjusted>> _futureStockData;
 
 
@@ -28,7 +27,7 @@ class _HomePageState extends State<Stockdetails> {
 
   Future<List<DailyAdjusted>> getHttpRequest(String symbol) async {
     String url =
-        "https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=$symbol&apikey=$apikey";
+        "https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=$symbol&apikey=${dotenv.env['stockkey']}";
     var response = await http.get(Uri.parse(url));
 
     if (response.statusCode == 200) {
