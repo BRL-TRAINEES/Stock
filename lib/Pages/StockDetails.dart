@@ -2,7 +2,8 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'package:stock_app/Models/daily_adjusted_model.dart'; // Import the model
+import 'package:stock_app/Models/daily_adjusted_model.dart';
+import 'package:stock_app/Pages/CompanyNews.dart';
 
 
 class Stockdetails extends StatefulWidget {
@@ -14,9 +15,9 @@ class Stockdetails extends StatefulWidget {
 }
 
 class _HomePageState extends State<Stockdetails> {
+
   final String apikey = "KVGTWNS5U9H7E4YC";
   late Future<List<DailyAdjusted>> _futureStockData;
-
 
 
   @override
@@ -64,7 +65,7 @@ class _HomePageState extends State<Stockdetails> {
                   if (snapshot.connectionState == ConnectionState.waiting) {  // if Api taking time to fetch data
                     return const Center(child: CircularProgressIndicator());
                   } else if (snapshot.hasError) {
-                    return Center(child: Text('Error: ${snapshot.error}'));
+                    return Center(child: Text('Error occured'));
                   } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
                     return const Center(child: Text('No stock data available.'));
                   } else {
@@ -125,6 +126,19 @@ class _HomePageState extends State<Stockdetails> {
               "Low: \$${stock.low.toStringAsFixed(2)}",
               style: const TextStyle(fontSize: 16),
             ),
+            const SizedBox(height: 8),
+            ElevatedButton(
+                onPressed:() {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => News(
+                        date: stock.date,
+                      ),
+                    ),
+                  );
+                },
+                child: Text('current News'))
           ],
         ),
       ),

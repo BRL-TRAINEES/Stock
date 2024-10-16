@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:stock_app/Models/StockSymbols.dart';
+import 'package:stock_app/Pages/MarketHolidays.dart';
 import 'package:stock_app/Pages/StockDetails.dart';
 
 class HomePage extends StatefulWidget {
@@ -27,12 +28,7 @@ class _HomePageState extends State<HomePage> {
       if (val.isEmpty) {
         SearchSymbol = SymbolList;
       } else {
-        SearchSymbol = SymbolList
-            .where((element) => element.symbol
-            .toString()
-            .toLowerCase()
-            .startsWith(val.toLowerCase()))
-            .toList();
+        SearchSymbol = SymbolList.where((element) => element.symbol.toString().toLowerCase().startsWith(val.toLowerCase())).toList();
       }
     });
   }
@@ -47,9 +43,7 @@ class _HomePageState extends State<HomePage> {
       var data = jsonDecode(response.body.toString());
 
       setState(() {
-        SymbolList = data
-            .map<StockSymbol>((item) => StockSymbol(symbol: item['symbol']))
-            .toList();
+        SymbolList = data.map<StockSymbol>((item) => StockSymbol(symbol: item['symbol'])).toList();
         SearchSymbol = SymbolList;
       });
     } else {
@@ -66,7 +60,6 @@ class _HomePageState extends State<HomePage> {
       body: Column(
         children: [
           Expanded(
-            flex: 1,
             child: Padding(
               padding: const EdgeInsets.all(10),
               child: TextField(
@@ -84,18 +77,42 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
           ),
+          Container(
+            child: ElevatedButton(
+                onPressed: (){
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => Holidays(),
+                    ),
+                  );
+                },
+                child: Text('See Market Holidays')),
+          ),
           Expanded(
-            flex: 6,
+            flex: 5,
             child: ListView.builder(
               itemCount: SearchSymbol.length,
               itemBuilder: (context, index) {
-                return Padding(
-                  padding: const EdgeInsets.all(6.0),
+                return Container(
+                  margin: EdgeInsets.fromLTRB(8, 5, 8, 8),
+                  decoration: BoxDecoration(
+                    boxShadow:[
+                      BoxShadow(
+                        color: Colors.grey.withOpacity(0.5),
+                        spreadRadius: 1,
+                        blurRadius: 5,
+                        offset: Offset(0, 3),
+                      ),
+                    ],
+                    color: Color.fromRGBO(40, 50, 90,1),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
                   child: GestureDetector(
                     child: ListTile(
                       title: Text(
                         SearchSymbol[index].symbol.toString(),
-                        style: const TextStyle(fontSize: 17),
+                        style: const TextStyle(fontSize: 17,color: Colors.white),
                       ),
                     ),
                     onTap: () {
