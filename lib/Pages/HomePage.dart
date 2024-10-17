@@ -8,9 +8,9 @@ import 'package:stock_app/Pages/StockDetails.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({super.key});
-
-  @override
+  const HomePage({super.key});  // constructor of homepage and we can use const in stateful as well when its parameters are also constant
+ //super.key is used in a constructor to pass the key parameter to the parent class. and Key is an identifier for widgets, helping Flutter manage and identify widgets in the widget tree.
+  @override      //override: Indicates that this method is overriding the createState() method from the StatefulWidget class.
   State<HomePage> createState() => _HomePageState();
 }
 
@@ -19,10 +19,11 @@ class _HomePageState extends State<HomePage> {
   List<StockSymbol> SearchSymbol = [];
 
   @override
-  void initState() {
-    super.initState();
+  void initState() {  // method called only once when widget is build and before widget put into widget tree , so in initstate we mostly access like fetching data or putting animations
+    super.initState();  // Calls the parent class's initState() method to ensure all setup in parent should also be done
     getSymbol();
   }
+
 
   void SearchList(String val) {
     setState(() {
@@ -35,11 +36,12 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
+
   Future<void> getSymbol() async {
     final response = await http.get(
       Uri.parse('https://finnhub.io/api/v1/stock/symbol?exchange=US&token=${dotenv.env['apikey']}'),
     );
-    print(dotenv.env['apikey']);
+   // print(dotenv.env['apikey']);
 
     if (response.statusCode == 200) {
       var data = jsonDecode(response.body.toString());
@@ -52,6 +54,7 @@ class _HomePageState extends State<HomePage> {
       throw Exception('Failed to load stock symbols');
     }
   }
+
 
   @override
   Widget build(BuildContext context) {
